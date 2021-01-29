@@ -8,16 +8,16 @@
 void APlayerMarineController::BeginPlay()
 {
 	Super::BeginPlay();
-	GetWorldTimerManager().SetTimer(FadeTimer, this, &APlayerMarineController::SetupGame, 1.0f, false);
 	DisableInput(this);
 	StartFade();
+	GetWorldTimerManager().SetTimer(Timer, this, &APlayerMarineController::SetupGame, 2.0f, false);
 }
 
 void APlayerMarineController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner)
 {
 	HUDWidget->RemoveFromViewport();
-	GetWorldTimerManager().SetTimer(DeathTimer, this, &APlayerMarineController::RestartLevel, RestartRate, false);
 	EndFade();
+	GetWorldTimerManager().SetTimer(Timer, this, &APlayerMarineController::RestartLevel, 2.0f, false);
 }
 
 void APlayerMarineController::SetupGame()
@@ -25,7 +25,7 @@ void APlayerMarineController::SetupGame()
 	if(!HUDClass) { return; }
 	HUDWidget = CreateWidget(this, HUDClass);
 	HUDWidget->AddToViewport();
-	EnableInput(this);
+	if(!InputEnabled()) { EnableInput(this); }
 }
 
 void APlayerMarineController::StartFade() const

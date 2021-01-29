@@ -1,21 +1,20 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MarsMarine/GameModes/MarsMarineGameModeBase.h"
-#include "Engine/TargetPoint.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetMathLibrary.h"
 #include "MarsMarine/Actors/PickUpSpawnPoint.h"
 #include "MarsMarine/Characters/Marine.h"
 #include "MarsMarine/Actors/HealthPickUp.h"
 #include "MarsMarine/Characters/Spider.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "Engine/TargetPoint.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 void AMarsMarineGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	SetupGame();
-	GetWorldTimerManager().SetTimer(SpawnTimer, this, &AMarsMarineGameModeBase::SpawnSpider, SpawnRate, true);
-	
+	GetWorldTimerManager().SetTimer(Timer, this, &AMarsMarineGameModeBase::SpawnSpider, SpawnRate, true);
 }
 
 void AMarsMarineGameModeBase::SpiderKilled()
@@ -24,7 +23,7 @@ void AMarsMarineGameModeBase::SpiderKilled()
 	AliveSpiders--;
 	if(AliveSpiders == 0)
 	{
-		GetWorldTimerManager().SetTimer(WaveDelay, this, &AMarsMarineGameModeBase::SetupNewWave, 2.0f, false);
+		GetWorldTimerManager().SetTimer(Timer, this, &AMarsMarineGameModeBase::SetupNewWave, 2.0f, false);
 	}
 }
 
@@ -58,7 +57,7 @@ void AMarsMarineGameModeBase::SpawnSpider()
 	RemainingSpawns--;
 	if(RemainingSpawns == 0)
 	{
-		GetWorldTimerManager().ClearTimer(SpawnTimer);
+		GetWorldTimerManager().ClearTimer(Timer);
 	}
 }
 
@@ -70,7 +69,7 @@ void AMarsMarineGameModeBase::SetupNewWave()
 	RemainingSpawns = SpawnLimit;
 	SpiderMovementSpeed *= SpiderMovementSpeedMultiplier;
 	GetWorld()->SpawnActor<AHealthPickUp>(HealthPickUpClass, GetRandomPickUpSpawnPoint()->GetActorTransform());
-	GetWorldTimerManager().SetTimer(SpawnTimer, this, &AMarsMarineGameModeBase::SpawnSpider, SpawnRate, true);
+	GetWorldTimerManager().SetTimer(Timer, this, &AMarsMarineGameModeBase::SpawnSpider, SpawnRate, true);
 }
 
 void AMarsMarineGameModeBase::SetupGame()

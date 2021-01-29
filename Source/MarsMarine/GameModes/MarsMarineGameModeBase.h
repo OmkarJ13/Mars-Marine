@@ -43,19 +43,27 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AHealthPickUp> HealthPickUpClass;
 
+	UPROPERTY(EditAnywhere)
+	float SpawnLimit = 5.0f;
+
+	UPROPERTY(EditAnywhere)
+	float SpawnRate = 1.5f;
+	
+	UPROPERTY(EditAnywhere)
+	float DifficultyMultiplier = 1.5f;
+
+	UPROPERTY(EditAnywhere)
+	float SpiderMovementSpeed = 300.0f;
+
+	UPROPERTY(EditAnywhere)
+	float SpiderMovementSpeedMultiplier = 1.05f;
+
 	int32 Kills = 0;
 	int32 CurrentWave = 1;
 	int32 RemainingSpawns;
 	int32 AliveSpiders = 0;
 	
-	FTimerHandle SpawnTimer;
-	FTimerHandle WaveDelay;
-
-	float SpawnLimit = 5.0f;
-	float SpawnRate = 1.5f;
-	float DifficultyMultiplier = 1.5f;
-	float SpiderMovementSpeed = 300.0f;
-	float SpiderMovementSpeedMultiplier = 1.05f;
+	FTimerHandle Timer;
 
 	UPROPERTY()
 	TArray<AActor*> TargetPoints;

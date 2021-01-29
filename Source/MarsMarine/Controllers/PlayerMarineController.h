@@ -16,19 +16,15 @@ protected:
 
 private:
 	virtual void GameHasEnded(AActor* EndGameFocus, bool bIsWinner) override;
-	void SetupGame();
 	void StartFade() const;
 	void EndFade() const;
-	
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<UUserWidget> HUDClass;
+	void SetupGame();
 
 	UPROPERTY(EditAnywhere)
-	float RestartRate = 2.0f;
+	TSubclassOf<UUserWidget> HUDClass;
 	
 	UPROPERTY()
 	UUserWidget* HUDWidget;
 
-	FTimerHandle DeathTimer;
-	FTimerHandle FadeTimer;
+	FTimerHandle Timer;
 };
